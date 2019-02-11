@@ -1,0 +1,43 @@
+<div class="container" style="margin-top: 5%">
+  <h2>Upload Document</h2>
+  <br>
+
+  <form class="form-horizontal" [formGroup]="uploadDocument">
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="naslovRada">Naslov rada:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="naslovRada" placeholder="Naslov rada" formControlName="title">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="kljucniPojmovi">Kljucni pojmovi:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="kljucniPojmovi" placeholder="Kljucni pojmovi"
+          formControlName="keywords">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="apstrakt">Apstrakt:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="apstrakt" placeholder="Apstrakt" formControlName="apstract">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="naucnaOblast">Naucna oblast:</label>
+      <div class="col-sm-10">
+        <select class="form-control" name='naucnaOblast' formControlName="category">
+          <option *ngFor='let oblast of oblasti' [value]='oblast'>{{oblast}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="naucnaOblast">Odaberi fajl:</label>
+      <div class="col-sm-10">
+        <input type="file" class="custom-file-input" id="inputGroupFile01"  (change)="onFileChange($event)">
+        <label class="custom-file-label" for="inputGroupFile01" >Odaberi fajl</label>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-success"  (click)="submitForm()" [disabled]='!uploadDocument.valid'>Dodaj</button>
+  </form>
+</div>
