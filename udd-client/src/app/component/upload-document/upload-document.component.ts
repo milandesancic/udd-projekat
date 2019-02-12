@@ -11,28 +11,42 @@ export class UploadDocumentComponent implements OnInit {
 
 
   uploadDocument: FormGroup;
-
+  mode = 'addAutor';
   oblasti = ['IT', 'Fizika', 'Matematika', 'Medicina', 'Sport', 'Programiranja'];
+  magazines = ['IT Svet', 'Sport Klub', 'FTN', 'PMF'];
 
   formData = new FormData();
+  autorForm: FormGroup;
+  autors = new Array();
   constructor(private uploadService: UploadService) { }
 
   ngOnInit() {
     this.uploadDocument = this.makeUploadForm();
+    this.autorForm = this.makeAutorForm();
     console.log(this.oblasti);
   }
 
+  makeAutorForm() {
+    let form = new FormGroup({
+      firstname: new FormControl("", Validators.required),
+      lastname: new FormControl("", Validators.required),
+      email :new FormControl("",Validators.required),
+      state: new FormControl("", Validators.required),
+      city: new FormControl("", Validators.required),
+    });
+    return form;
+  }
 
   makeUploadForm() {
     let form = new FormGroup({
       title: new FormControl("", Validators.required),
       keywords: new FormControl("", Validators.required),
       apstract: new FormControl("", Validators.required),
-      category: new FormControl("", Validators.required)
+      category: new FormControl("", Validators.required),
+      magazine: new FormControl("", Validators.required)
     });
     return form;
   }
-
 
   onFileChange(event: any) {
 
@@ -45,13 +59,14 @@ export class UploadDocumentComponent implements OnInit {
     }
   }
 
-
   submitForm() {
-    this.formData.append('title',this.uploadDocument.value['title']);
-    this.formData.append('keywords',this.uploadDocument.value['keywords']);
-    this.formData.append('apstract',this.uploadDocument.value['apstract']);
-    this.formData.append('category',this.uploadDocument.value['category']);
-    console.log(this.formData)
+    this.formData.append('title', this.uploadDocument.value['title']);
+    this.formData.append('magazine', this.uploadDocument.value['magazine']);
+    this.formData.append('keywords', this.uploadDocument.value['keywords']);
+    this.formData.append('apstract', this.uploadDocument.value['apstract']);
+    this.formData.append('category', this.uploadDocument.value['category']);
+    this.formData.append('jsonAutors',JSON.stringify(this.autors));
+    console.log(this.autorForm.value);
     this.uploadService.uploadFile(this.formData).subscribe((data) => {
       console.log(data);
     },
@@ -60,4 +75,17 @@ export class UploadDocumentComponent implements OnInit {
       }
     )
   }
+
+  addAutor(){
+    this.autors.push(this.autorForm.value);
+    this.autorForm = this.makeAutorForm();
+  }
+
+  nextForm(){
+    this.autors.push(this.autorForm.value);
+    console.log(this.autors);
+    this.mode ="addDocument";
+  }
+
+
 }

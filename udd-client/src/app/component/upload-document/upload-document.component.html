@@ -2,42 +2,98 @@
   <h2>Upload Document</h2>
   <br>
 
-  <form class="form-horizontal" [formGroup]="uploadDocument">
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="naslovRada">Naslov rada:</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="naslovRada" placeholder="Naslov rada" formControlName="title">
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="kljucniPojmovi">Kljucni pojmovi:</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="kljucniPojmovi" placeholder="Kljucni pojmovi"
-          formControlName="keywords">
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="apstrakt">Apstrakt:</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="apstrakt" placeholder="Apstrakt" formControlName="apstract">
-      </div>
-    </div>
 
-    <div class="form-group">
-      <label for="naucnaOblast">Naucna oblast:</label>
-      <div class="col-sm-10">
-        <select class="form-control" name='naucnaOblast' formControlName="category">
-          <option *ngFor='let oblast of oblasti' [value]='oblast'>{{oblast}}</option>
-        </select>
+  <div *ngIf="mode==='addAutor'" class="container" style=" width: 80%">
+    <h4>Dodajte autore rada</h4>
+    <form class="form-horizontal" [formGroup]="autorForm">
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="ime">Ime</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="ime" placeholder="ime" formControlName="firstname">
+        </div>
       </div>
-    </div>
-    <div class="form-group">
-      <label for="naucnaOblast">Odaberi fajl:</label>
-      <div class="col-sm-10">
-        <input type="file" class="custom-file-input" id="inputGroupFile01"  (change)="onFileChange($event)">
-        <label class="custom-file-label" for="inputGroupFile01" >Odaberi fajl</label>
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="prezime">Prezime</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="prezime" placeholder="Prezime" formControlName="lastname">
+        </div>
       </div>
-    </div>
-    <button type="submit" class="btn btn-success"  (click)="submitForm()" [disabled]='!uploadDocument.valid'>Dodaj</button>
-  </form>
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="email">Email</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="email" placeholder="Email" formControlName="email">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="drzava">Drzava</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="drzava" placeholder="Drzava" formControlName="state">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="grad">Grad</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="grad" placeholder="Grad" formControlName="city">
+        </div>
+      </div>
+      <button style="margin: 2%" type="button" class="btn btn-success" (click)='addAutor()'><i class="fa fa-plus"></i></button>
+      <button type="button" class="btn btn-success" (click)='nextForm()'><i class="fa fa-arrow-right"></i></button>
+
+    </form>
+  </div>
+
+  <div *ngIf="mode==='addDocument'"class="container">  
+    <form class="form-horizontal" [formGroup]="uploadDocument">
+
+      <div class="form-group">
+        <label for="naucnaOblast">Casopis rada:</label>
+        <div class="col-sm-10">
+          <select class="form-control" name='magazine' formControlName="magazine">
+            <option value="">Odaberi casopis</option>
+            <option *ngFor='let magazine of magazines' [value]='magazine'>{{magazine}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="naslovRada">Naslov rada:</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="naslovRada" placeholder="Naslov rada" formControlName="title">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="kljucniPojmovi">Kljucni pojmovi:</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="kljucniPojmovi" placeholder="Kljucni pojmovi"
+            formControlName="keywords">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="apstrakt">Apstrakt:</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="apstrakt" placeholder="Apstrakt" formControlName="apstract">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="naucnaOblast">Naucna oblast:</label>
+        <div class="col-sm-10">
+          <select class="form-control" name='naucnaOblast' formControlName="category">
+            <option value="">Odaberi naucnu oblast</option>
+            <option *ngFor='let oblast of oblasti' [value]='oblast'>{{oblast}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="naucnaOblast">Odaberi fajl:</label>
+        <div class="col-sm-10">
+          <input type="file" class="custom-file-input" id="inputGroupFile01" (change)="onFileChange($event)">
+          <label class="custom-file-label" for="inputGroupFile01">Odaberi fajl</label>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-success" (click)="submitForm()"
+        [disabled]='!uploadDocument.valid'>Dodaj</button>
+    </form>
+  </div>
 </div>

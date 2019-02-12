@@ -1,0 +1,17 @@
+<div class="container">
+
+    <button class="btn btn-primary" (click)="submit()">Trazi</button>
+    <div *ngIf="recenzencit">
+        <div *ngFor="let recenzent of recenzencit">
+            <div style="margin-top: 2%" class="card">
+                <h5 class="card-header">Recenzent</h5>
+                <div class="card-body">
+                    <p><b>Ime: </b>{{recenzent.firstname}}</p>
+                    <p><b>Prezime: </b>{{recenzent.lastname}}</p>
+                    <p><b>E-mail: </b>{{recenzent.email}}</p>
+                    <p><b>Kategorija: </b>{{recenzent.categoory}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

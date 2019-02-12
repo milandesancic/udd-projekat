@@ -10,17 +10,20 @@ import ftn.uns.ac.rs.uddprojekat.model.IndexUnit;
 import ftn.uns.ac.rs.uddprojekat.model.dto.FileUploadDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -29,11 +32,10 @@ import java.util.List;
 public class IndexerControler {
 
 
-    @Value("${dataDir}")
-    private String DATA_DIR_PATH;
-
     @Autowired
     Indexer indexer;
+    @Value("${dataDir}")
+    private String DATA_DIR_PATH;
 
     @PostMapping(value = "/index/add")
     public ResponseEntity<?> addFile(@ModelAttribute FileUploadDto file) {
@@ -43,7 +45,8 @@ public class IndexerControler {
         ObjectMapper mapper = new ObjectMapper();
 
         try {
-            List<Autor> autors = mapper.readValue(file.getJsonAutors(), new TypeReference<List<Autor>>(){});
+            List<Autor> autors = mapper.readValue(file.getJsonAutors(), new TypeReference<List<Autor>>() {
+            });
             file.setAutors(autors);
             System.out.println(file.toString());
         } catch (IOException e) {
@@ -91,5 +94,29 @@ public class IndexerControler {
         }
 
 
+    }
+
+    @GetMapping(value = "/get")
+    public ResponseEntity<Resource> getFile(@RequestParam String path) throws Exception {
+        try {
+//            Path pathToDir = Paths.get(DATA_DIR_PATH);
+//            Path file = pathToDir.resolve(path);
+//            System.out.println(file.toString());
+            Path file = Paths.get(path);
+            Resource resource = new UrlResource(file.toUri());
+            if(resource.exists()||resource.isReadable()){
+                String contentType="application/pdf";
+                return ResponseEntity.ok()
+                        .contentType(MediaType.parseMediaType(contentType))
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                        .body(resource);
+            }
+            else {
+                throw new Exception("FILE NOT FOUND");
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return  null;
     }
 }

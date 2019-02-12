@@ -1,6 +1,7 @@
 package ftn.uns.ac.rs.uddprojekat.controller;
 
 import ftn.uns.ac.rs.uddprojekat.model.SearchType;
+import ftn.uns.ac.rs.uddprojekat.model.dto.BoolQuery;
 import ftn.uns.ac.rs.uddprojekat.model.dto.GeoLocation;
 import ftn.uns.ac.rs.uddprojekat.model.dto.SimpleQuery;
 import ftn.uns.ac.rs.uddprojekat.model.dto.TextDto;
@@ -40,6 +41,13 @@ public class SearchController {
     public ResponseEntity<?> searchGeoQuery(@RequestBody GeoLocation geoDto) {
         QueryBuilder query = CustomQueryBuilder.buildGeoQuery(SearchType.GEO, geoDto.getLongitude(), geoDto.getLatitude());
         return new ResponseEntity<>(resultRetriever.getGeoResults(query), HttpStatus.OK);
+
+    }
+
+    @PostMapping(value = "/search/bool")
+    public ResponseEntity<?> searchBool(@RequestBody BoolQuery queryDto) {
+        QueryBuilder query = CustomQueryBuilder.buildBoolQuery(queryDto);
+        return new ResponseEntity<>(resultRetriever.getResults(query), HttpStatus.OK);
 
     }
 

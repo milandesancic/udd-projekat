@@ -58,7 +58,8 @@ public class ResultRetriever {
                     resultData.setKeywords((String) searchHit.getSource().get("keywords"));
                     resultData.setMagazine((String) searchHit.getSource().get("magazine"));
                     resultData.setText((String) searchHit.getSource().get("text"));
-
+                    resultData.setDocumentAbstract((String) searchHit.getSource().get("document_abstract"));
+                    resultData.setPath((String) searchHit.getSource().get("path"));
                     if (searchHit.getHighlightFields() != null) {
                         StringBuilder highlights = new StringBuilder("...");
 

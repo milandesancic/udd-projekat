@@ -1,6 +1,7 @@
 package ftn.uns.ac.rs.uddprojekat.search;
 
 import ftn.uns.ac.rs.uddprojekat.model.SearchType;
+import ftn.uns.ac.rs.uddprojekat.model.dto.BoolQuery;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.geo.GeoPoint;
@@ -55,5 +56,25 @@ public class CustomQueryBuilder {
         MoreLikeThisQueryBuilder.Item[] items = {};
         QueryBuilder retVal = QueryBuilders.moreLikeThisQuery(fild,like,items).minTermFreq(1).minDocFreq(1);
         return  retVal;
+    }
+
+    public static QueryBuilder buildBoolQuery(BoolQuery queryDto) {
+
+        QueryBuilder query1 = buildQuery(SearchType.REGULAR,queryDto.getFieldOne(),queryDto.getValueOne());
+        QueryBuilder query2 = buildQuery(SearchType.REGULAR,queryDto.getFieldSecond(),queryDto.getValueSecond());
+        BoolQueryBuilder builder = QueryBuilders.boolQuery();
+
+        if(queryDto.getOperation().equalsIgnoreCase("AND")){
+            builder.must(query1);
+            builder.must(query2);
+        }else if(queryDto.getOperation().equalsIgnoreCase("OR")){
+            builder.should(query1);
+            builder.should(query2);
+        }else{
+            builder.must(query1);
+            builder.mustNot(query2);
+        }
+        return builder;
+
     }
 }

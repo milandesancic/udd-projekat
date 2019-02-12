@@ -1,0 +1,24 @@
+<div class="container" style="margin-top: 3%">
+  <form class="form-inline" [formGroup]="searchForm">
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="text">Tekst</label>
+      <input class="form-control" formControlName="text">
+    </div>
+    <button class="btn btn-primary" (click)="submit()">Find</button>
+  </form>
+
+  <div class="container" *ngIf="recenzencit">
+    <hr>
+    <div *ngFor="let recenzent of recenzencit">
+      <div style="margin-top: 2%" class="card">
+        <h5 class="card-header">Recenzent</h5>
+        <div class="card-body">
+          <p><b>Ime: </b>{{recenzent.firstname}}</p>
+          <p><b>Prezime: </b>{{recenzent.lastname}}</p>
+          <p><b>E-mail: </b>{{recenzent.email}}</p>
+          <p><b>Kategorija: </b>{{recenzent.category}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

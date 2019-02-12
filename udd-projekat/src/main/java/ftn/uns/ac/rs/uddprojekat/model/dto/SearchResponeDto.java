@@ -8,6 +8,9 @@ public class SearchResponeDto {
     private String category;
     private String magazine;
     private String hightlight;
+    private String documentAbstract;
+    private String path;
+
 
     public SearchResponeDto() {
     }
@@ -67,5 +70,21 @@ public class SearchResponeDto {
 
     public void setHightlight(String hightlight) {
         this.hightlight = hightlight;
+    }
+
+    public String getDocumentAbstract() {
+        return documentAbstract;
+    }
+
+    public void setDocumentAbstract(String documentAbstract) {
+        this.documentAbstract = documentAbstract;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }
