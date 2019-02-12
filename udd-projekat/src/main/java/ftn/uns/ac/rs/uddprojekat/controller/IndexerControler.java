@@ -1,8 +1,11 @@
 package ftn.uns.ac.rs.uddprojekat.controller;
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ftn.uns.ac.rs.uddprojekat.handler.PDFHandler;
 import ftn.uns.ac.rs.uddprojekat.indexer.Indexer;
+import ftn.uns.ac.rs.uddprojekat.model.Autor;
 import ftn.uns.ac.rs.uddprojekat.model.IndexUnit;
 import ftn.uns.ac.rs.uddprojekat.model.dto.FileUploadDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +22,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 
 @RestController
-@CrossOrigin(value = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 public class IndexerControler {
 
 
@@ -34,6 +38,17 @@ public class IndexerControler {
     @PostMapping(value = "/index/add")
     public ResponseEntity<?> addFile(@ModelAttribute FileUploadDto file) {
         System.out.println("Dodajem fajl");
+//        System.out.println(file.toString());
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            List<Autor> autors = mapper.readValue(file.getJsonAutors(), new TypeReference<List<Autor>>(){});
+            file.setAutors(autors);
+            System.out.println(file.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         try {
             indexUploadedFile(file);
         } catch (Exception e) {
@@ -65,7 +80,11 @@ public class IndexerControler {
                 IndexUnit indexUnit = new PDFHandler().getIndexUnit(new File(fileName));
                 indexUnit.setTitle(model.getTitle());
                 indexUnit.setKeywords(model.getKeywords());
-                indexUnit.setMagazine_name("Magazin");
+                indexUnit.setMagazine(model.getMagazine());
+                indexUnit.setCategory(model.getCategory());
+                indexUnit.setDocument_abstract(model.getApstract());
+                indexUnit.setPath(fileName);
+                indexUnit.setAutors(model.getAutors());
                 System.out.println(indexUnit.toString());
                 indexer.add(indexUnit);
             }

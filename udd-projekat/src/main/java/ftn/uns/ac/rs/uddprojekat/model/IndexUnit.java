@@ -3,20 +3,27 @@ package ftn.uns.ac.rs.uddprojekat.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
 
-@Document(indexName = "test",type ="document",createIndex = true)
+import java.util.ArrayList;
+import java.util.List;
+
+@Document(indexName = "naucnacentrala_dokumenti", type = "dokument" )
 public class IndexUnit {
 
 
     @Id
     private String title;
     private String text;
-    private String magazine_name;
     private String keywords;
     private String category;
+    private String magazine;
+    private String document_abstract;
+    private String path;
+    private List<Autor> autors;
 
+    public IndexUnit() {
+        this.autors = new ArrayList<>();
+    }
 
     public String getTitle() {
         return title;
@@ -32,14 +39,6 @@ public class IndexUnit {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public String getMagazine_name() {
-        return magazine_name;
-    }
-
-    public void setMagazine_name(String magazine_name) {
-        this.magazine_name = magazine_name;
     }
 
     public String getKeywords() {
@@ -58,14 +57,35 @@ public class IndexUnit {
         this.category = category;
     }
 
-    @Override
-    public String toString() {
-        return "IndexUnit{" +
-                "title='" + title + '\'' +
-                ", text='" + text + '\'' +
-                ", magazine_name='" + magazine_name + '\'' +
-                ", keywords='" + keywords + '\'' +
-                ", category='" + category + '\'' +
-                '}';
+    public String getMagazine() {
+        return magazine;
+    }
+
+    public void setMagazine(String magazine) {
+        this.magazine = magazine;
+    }
+
+    public String getDocument_abstract() {
+        return document_abstract;
+    }
+
+    public void setDocument_abstract(String document_abstract) {
+        this.document_abstract = document_abstract;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public List<Autor> getAutors() {
+        return autors;
+    }
+
+    public void setAutors(List<Autor> autors) {
+        this.autors = autors;
     }
 }

@@ -1,8 +1,11 @@
 package ftn.uns.ac.rs.uddprojekat.model.dto;
 
+import ftn.uns.ac.rs.uddprojekat.model.Autor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileUploadDto implements Serializable {
 
@@ -10,19 +13,27 @@ public class FileUploadDto implements Serializable {
     private String keywords;
     private String apstract;
     private String category;
+    private String magazine;
+    private String jsonAutors;
+    private List<Autor> autors;
     private MultipartFile file;
 
+
+
     public FileUploadDto() {
+        this.autors =  new ArrayList<Autor>();
     }
 
-    public FileUploadDto(String title, String keywords, String apstract, String category, MultipartFile file) {
+    public FileUploadDto(String title, String keywords, String apstract, String category, String magazine, String jsonAutors, List<Autor> autors, MultipartFile file) {
         this.title = title;
         this.keywords = keywords;
         this.apstract = apstract;
         this.category = category;
+        this.magazine = magazine;
+        this.jsonAutors = jsonAutors;
+        this.autors = autors;
         this.file = file;
     }
-
 
     public String getTitle() {
         return title;
@@ -64,6 +75,30 @@ public class FileUploadDto implements Serializable {
         this.file = file;
     }
 
+    public String getMagazine() {
+        return magazine;
+    }
+
+    public void setMagazine(String magazine) {
+        this.magazine = magazine;
+    }
+
+    public String getJsonAutors() {
+        return jsonAutors;
+    }
+
+    public void setJsonAutors(String jsonAutors) {
+        this.jsonAutors = jsonAutors;
+    }
+
+    public List<Autor> getAutors() {
+        return autors;
+    }
+
+    public void setAutors(List<Autor> autors) {
+        this.autors = autors;
+    }
+
     @Override
     public String toString() {
         return "FileUploadDto{" +
@@ -71,6 +106,8 @@ public class FileUploadDto implements Serializable {
                 ", keywords='" + keywords + '\'' +
                 ", apstract='" + apstract + '\'' +
                 ", category='" + category + '\'' +
+                ", magazine='" + magazine + '\'' +
+                ", autors='" + autors + '\'' +
                 ", file=" + file +
                 '}';
     }
