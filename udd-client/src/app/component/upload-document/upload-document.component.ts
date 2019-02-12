@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UploadService } from 'src/app/service/upload.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-upload-document',
@@ -18,7 +19,7 @@ export class UploadDocumentComponent implements OnInit {
   formData = new FormData();
   autorForm: FormGroup;
   autors = new Array();
-  constructor(private uploadService: UploadService) { }
+  constructor(private uploadService: UploadService,private router:Router) { }
 
   ngOnInit() {
     this.uploadDocument = this.makeUploadForm();
@@ -69,6 +70,8 @@ export class UploadDocumentComponent implements OnInit {
     console.log(this.autorForm.value);
     this.uploadService.uploadFile(this.formData).subscribe((data) => {
       console.log(data);
+      alert("Uspesno dodan rad");
+      this.router.navigate(["/"]);
     },
       (error) => {
         console.log(error);
